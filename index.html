@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Garmin Аналитика</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        button { margin: 10px 0; padding: 10px 20px; }
+        #result { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Garmin Аналитика</h1>
+    <button onclick="updateData()">Обновить данные из Garmin</button>
+    <button onclick="getRecommendation()">Получить рекомендации</button>
+    <div id="result"></div>
+    <script>
+        function updateData() {
+            document.getElementById('result').innerText = 'Обновление данных...';
+            fetch('http://127.0.0.1:5000/api/update', {method: 'POST'})
+                .then(r => r.json())
+                .then(data => {
+                    document.getElementById('result').innerText = 'Данные обновлены!';
+                })
+                .catch(err => {
+                    document.getElementById('result').innerText = 'Ошибка обновления: ' + err;
+                });
+        }
+        function getRecommendation() {
+            document.getElementById('result').innerText = 'Генерация рекомендации...';
+            fetch('http://127.0.0.1:5000/api/recommendation', {method: 'POST'})
+                .then(r => r.json())
+                .then(data => {
+                    document.getElementById('result').innerText = data.recommendation;
+                })
+                .catch(err => {
+                    document.getElementById('result').innerText = 'Ошибка: ' + err;
+                });
+        }
+    </script>
+</body>
+</html>
